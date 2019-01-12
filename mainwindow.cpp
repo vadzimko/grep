@@ -23,7 +23,7 @@ MainWindow::~MainWindow()
 void MainWindow::on_open_clicked()
 {
     if (!finished) {
-        aborted = true;
+        on_cancel_clicked();
     }
 
     directory = QFileDialog::getExistingDirectory(this, "Select directory", QString(), QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
@@ -211,6 +211,9 @@ void MainWindow::on_search_button_clicked()
     }
     startSearch();
 
+    if (tri != nullptr) {
+        delete tri;
+    }
     tri = new trigram(tri_map, str);
     QThread* thread = new QThread();
     tri->moveToThread(thread);
@@ -264,4 +267,3 @@ void MainWindow::file_searched(QString file, qint32 number) {
     addFileWithEntry(file, number);
     filesOK++;
 }
-
