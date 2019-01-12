@@ -16,6 +16,8 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete tri_map;
+    delete tri;
 }
 
 void MainWindow::on_open_clicked()
@@ -105,6 +107,9 @@ bool MainWindow::cancelRequested() {
 
 void MainWindow::scan() {
     status = Status::SCANNING_FILES;
+    if (tri_map != nullptr) {
+        delete tri_map;
+    }
     tri_map = new QHash<QString, QSet<int64_t>>();
 
     QDirIterator it(directory, QDir::Files | QDir::NoDotAndDotDot | QDir::NoSymLinks, QDirIterator::Subdirectories);
@@ -126,7 +131,11 @@ void MainWindow::scan() {
     }
 
     status = Status::INDEXING;
+    if (tri != nullptr) {
+        delete tri;
+    }
     tri = new trigram(tri_map);
+
     QThread* thread = new QThread();
     tri->moveToThread(thread);
 

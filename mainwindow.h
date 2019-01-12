@@ -80,8 +80,8 @@ private:
     qint32 filesProcessedText;
     qint32 filesOK;
 
-    QHash<QString, QSet<int64_t>> *tri_map;
-    trigram* tri;
+    QHash<QString, QSet<int64_t>> *tri_map = nullptr;
+    trigram* tri = nullptr;
     QFuture<void> refresher;
 };
 
